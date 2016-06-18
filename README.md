@@ -1,5 +1,6 @@
 # vim-quickrun-job
-job runner module for vim-quickrun
+
+Job runner module for [vim-quickrun](https://github.com/thinca/vim-quickrun)
 
 This plugin is highly experimental and unstable.
 
