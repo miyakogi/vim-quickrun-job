@@ -112,7 +112,7 @@ function! s:build_command(session, tmpl) abort
     endif
     call add(result, value)
   endwhile
-  call filter(result, 'v:val !~# "^\\s*$"')
+  call filter(result, 'v:val !~# "^[ \n\r]*$"')
   return result
 endfunction
 
@@ -120,10 +120,9 @@ function! s:build_commands(session) abort
   let commands = copy(a:session.config.exec)
   call filter(map(commands, 's:build_command(a:session, quickrun#expand(v:val))'), '!empty(v:val)')
   let result = []
-  " flatten and append '&&'
+  " flatten and add '&&'
   for cmd in commands
-    call extend(result, cmd)
-    call add(result, '&&')
+    call extend(result, add(cmd, '&&'))
   endfor
   " remove last '&&'
   if !empty(result)
