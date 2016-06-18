@@ -133,7 +133,6 @@ endfunction
 
 function! s:runner.run(commands, input, session) abort
   let commands = s:build_commands(a:session)
-  echomsg string(commands)
   let options = {
   \   'out_mode': self.config.out_mode,
   \   'err_mode': self.config.out_mode,
