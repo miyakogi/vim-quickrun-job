@@ -34,6 +34,10 @@ function! s:close_cb(session, ch) abort
   return exit_code
 endfunction
 
+function! s:stop_timer(timer, ...) abort
+  call timer_stop(a:timer)
+endfunction
+
 function! s:output(session, timer) abort
   if !empty(a:session._msg)
     call a:session.output(join(a:session._msg, ""))
@@ -42,7 +46,7 @@ function! s:output(session, timer) abort
 
   " for safety
   if has_key(a:session, 'exit_code')
-    call timer_stop(a:timer)
+    call timer_start(1, function('s:stop_timer', [a:timer]), {'repeat': 1})
   endif
 endfunction
 
