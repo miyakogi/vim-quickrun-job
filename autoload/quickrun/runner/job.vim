@@ -13,6 +13,7 @@ let s:V = vital#of('quickrun').load(
 let s:runner = {
 \   'config': {
 \     'out_mode': 'raw',
+\     'updatetime': 50,
 \   }
 \ }
 
@@ -141,7 +142,11 @@ function! s:runner.run(commands, input, session) abort
   \ }
   let a:session._msg = []
   let a:session._job =  job_start(commands, options)
-  let a:session._timer = timer_start(50, function('s:output', [a:session]), {'repeat': -1})
+  let a:session._timer = timer_start(
+  \   self.config.updatetime,
+  \   function('s:output', [a:session]),
+  \   {'repeat': -1}
+  \ )
   call ch_sendraw(a:session._job, a:input)
   call a:session.continue()
 endfunction

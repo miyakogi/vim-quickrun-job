@@ -15,10 +15,11 @@ In `quickrun_config`, add `'runner': 'job'`.
 
 ## Options
 
-You can choose output mode of the channel.
+You can change output mode of the channel and interval (milliseconds) to output intermediate result.
 
 ```
-'runner/job/out_mode': 'raw'  " default
+'runner/job/out_mode': 'raw',  " default
+'runner/job/updatetime': 50  " default, milliseconds
 ```
 
 `raw` mode may include broken output.
