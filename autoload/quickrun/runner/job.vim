@@ -66,6 +66,23 @@ function! s:runner.validate() abort
   endtry
 endfunction
 
+function! s:split_values(value) abort
+  let v = a:value
+  let result = []
+  while v =~# '"\_.*"'
+    if v[0] ==# '"'
+      let l:val = matchstr(v, '"\_.\{-}"')
+      call add(result, l:val[1:-2])  " remove double quotes
+    else
+      let l:val = matchstr(v, '^.\{-}"\@=')
+      call extend(result, split(l:val))
+    endif
+    let v = v[len(l:val) :]
+  endwhile
+  call extend(result, split(v))
+  return result
+endfunction
+
 function! s:build_command(session, tmpl) abort
   " Run commands quickly.
   " Version: 0.6.0
@@ -115,7 +132,11 @@ function! s:build_command(session, tmpl) abort
       endif
       let rest = rest[len(mod) :]
     endif
-    call add(result, value)
+    if symbol ==? 's'
+      call add(result, value)
+    else
+      call extend(result, s:split_values(value))
+    endif
   endwhile
   call filter(result, 'v:val !~# "^[ \n\r]*$"')
   return result
